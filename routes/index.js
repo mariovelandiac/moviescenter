@@ -6,7 +6,7 @@ const actorsRouter = require("./actors.router");
 
 function routerApi(app) {
   const router = express.Router();
-  app.use('/', (req, res)=> {
+  app.get('/', (req, res)=> {
     res.send("¡Bienvenido!")
   })
   app.use('/api/v1', router)
