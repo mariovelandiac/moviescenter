@@ -1,13 +1,26 @@
 const express = require("express");
-const os = require("os");
 const routerApi = require("./routes");
 const app = express();
+const cors = require("cors");
 const port = 3000;
-const IP = os.networkInterfaces().eth0[0].address;
-const {logErrors, errorHandler, boomErrorHandler} = require('./middlewares/error.handler')
+const {logErrors, errorHandler, boomErrorHandler} = require('./middlewares/error.handler');
 
 // habilitar uso de JSON
 app.use(express.json());
+
+// habilitar uso de CORS
+// Objeto de configuración CORS
+const whitelist = ["http://localhost:5500", "http:google.com"];
+const options = {
+  origin: (origin, cb) => {
+    if (whitelist.includes(origin)) {
+      cb(null, true)
+    } else {
+      cb(new Error("domain not allowed"))
+    }
+  }
+}
+app.use(cors(options));
 
 // habilita Router
 routerApi(app);
@@ -20,5 +33,4 @@ app.use(errorHandler);
 
 // ponemos a escuchar al servidor y notificamos
 app.listen(port, () => {
-  console.log(`Operando en el puerto http://${IP}:${port}`)
 })
