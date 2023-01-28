@@ -13,7 +13,7 @@ app.use(express.json());
 const whitelist = ["172.20.217.246"];
 const options = {
   origin: (origin, cb) => {
-    if (whitelist.includes(origin)) {
+    if (whitelist.includes(origin) || !origin) {
       cb(null, true)
     } else {
       cb(new Error("domain not allowed"))
