@@ -10,7 +10,7 @@ app.use(express.json());
 
 // habilitar uso de CORS
 // Objeto de configuración CORS
-const whitelist = ["http://localhost:5500", "http:google.com"];
+const whitelist = ["172.20.217.246"];
 const options = {
   origin: (origin, cb) => {
     if (whitelist.includes(origin)) {
@@ -20,7 +20,7 @@ const options = {
     }
   }
 }
-app.use(cors());
+app.use(cors(options));
 
 // habilita Router
 routerApi(app);
