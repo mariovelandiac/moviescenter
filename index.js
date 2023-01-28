@@ -2,7 +2,7 @@ const express = require("express");
 const routerApi = require("./routes");
 const app = express();
 const cors = require("cors");
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 const {logErrors, errorHandler, boomErrorHandler} = require('./middlewares/error.handler');
 
 // habilitar uso de JSON
@@ -32,5 +32,5 @@ app.use(errorHandler);
 
 
 // ponemos a escuchar al servidor y notificamos
-app.listen(port, () => {
+app.listen(PORT, () => {
 })
