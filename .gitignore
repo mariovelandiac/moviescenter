@@ -212,6 +212,12 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# persistencia de datos
+postgres_data
+
+#Docker info
+docker-compose.yml
+
 # Windows shortcuts
 *.lnk
 
