@@ -4,6 +4,10 @@ const setupModels = require('./../db/models')
 // se configura para enviar una sola URL con toda la info
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword)
+
+// para cambiar hay que installar el paquete de node de la bd
+// postgres: npm i --save pg
+// mysql: npm i --save mysql2
 // url de conexión
 const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`
 
