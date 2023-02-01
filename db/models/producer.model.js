@@ -9,7 +9,7 @@ const ProducerSchema = {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  login: {
+  name: {
     allowNull: false,
     type: DataTypes.STRING,
   },
@@ -17,7 +17,7 @@ const ProducerSchema = {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'created_at',
-    defaultValue: Sequelize.Now
+    defaultValue: Sequelize.NOW
   }
 }
 

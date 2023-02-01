@@ -1,6 +1,5 @@
-// const boom = require("@hapi/boom");
-// const faker = require("faker");
-const getConection = require("../libs/postgres");
+const boom = require("@hapi/boom");
+const { models } = require('./../libs/sequelize')
 
 
 class GenreService {
@@ -8,28 +7,35 @@ class GenreService {
   }
 
   generate() {
-
   }
 
   async create(data) {
-    return data
+    const newGenre = await models.Genre.create(data)
+    return newGenre
   }
 
   async find() {
-    const client = await getConection();
-    const rta = await client.query("SELECT * FROM tasks")
-    return rta.rows;
+    const genre = await models.Genre.findAll();
+    return genre;
   }
 
   async findOne(id) {
-    return {id}
+    const genre = await models.Genre.findByPk(id)
+    if (!genre) {
+      throw boom.notFound('genre not found')
+    }
+    return genre
   }
 
   async update(id, changes) {
-    return {id, changes}
+    const genre = await this.findeOne(id);
+    const rta = await genre.update(changes);
+    return rta
   }
 
   async delete(id) {
+    const genre = await this.findeOne(id);
+    genre.destroy();
     return {id}
   }
 }

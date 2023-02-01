@@ -59,8 +59,8 @@ router.patch('/:id',
   try {
     const {id} = req.params;
     const body = req.body;
-    const product = await service.update(id, body)
-     res.json(product)
+    const movie = await service.update(id, body)
+     res.json(movie)
    } catch (e) {
       next(e)
     }
@@ -71,8 +71,8 @@ router.patch('/:id',
  async (req, res, next) => {
   try {
     const {id} = req.params;
-    const product =  await service.delete(id)
-    res.json(product)
+    const movie =  await service.delete(id)
+    res.json(movie)
   } catch (e) {
     next(e)
   }

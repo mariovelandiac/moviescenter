@@ -1,82 +1,41 @@
 const boom = require("@hapi/boom");
-const faker = require("faker");
-const sequelize = require('./../libs/sequelize');
+const { models } = require('./../libs/sequelize')
 
 class ActorsService {
   constructor() {
-    this.actors = [];
-    this.generate();
   }
 
   generate() {
-    const today = new Date();
-    const yearToday = today.getFullYear();
-    const limit = 100;
-    for (let i = 0; i<limit; i++) {
-      this.actors.push({
-        id: faker.datatype.uuid(),
-        name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-        gender: faker.name.gender({boolean: true}),
-        age: yearToday - faker.datatype.number({min: 1930, max: 2000}),
-        isBlock: faker.datatype.boolean(),
-      })
-    }
   }
 
   async create(data) {
-    const keys = Object.keys(this.actors[0]);
-    const newActor = {
-    id: this.actors.length + 1,
-    ...data
-    }
-    const newActorKeys = Object.keys(newActor);
-    if (JSON.stringify(newActorKeys) == JSON.stringify(keys)) {
-      this.actors.push(newActor);
-      return newActor
-    } else {
-      throw boom.badRequest("format not valid")
-    }
+    const newActor = await models.Actor.create(data);
+    return newActor
   }
 
   async find() {
-    const query = 'SELECT * FROM tasks';
-    const [data] = await sequelize.query(query);
-    return data
+    const actors = await models.Actor.findAll();
+    return actors
   }
 
   async findOne(id) {
-    const actor = this.actors.find(item => item.id === id);
+    const actor = await models.Actor.findByPk(id);
     if (!actor) {
-      throw boom.notFound("actor not found")
-    }
-    if (actor.isBlock) { // si está bloqueado
-      throw boom.conflict("this actor is blocked")
+      throw boom.notFound('actor not found');
     }
     return actor
   }
 
   async update(id, changes) {
-    const index = this.actors.findIndex(item => item.id === id);
-    // validacion de existencia de la película
-    if (index === -1) {
-      throw boom.notFound("actor not found")
-    }
-    const actor = this.actors[index];
-    this.actors[index] = {
-      ...actor,
-      ...changes
-    }
-    return this.actors[index]
+    const actor = await this.findOne(id);
+    const rta = await actor.update(changes);
+    return rta
   }
 
   async delete(id) {
-    const index = this.actors.findIndex(item => item.id === id);
-    // validacion de existencia de la película
-    if (index === -1) {
-      throw boom.notFound("actor not found")
-    }
-    this.actors.splice(index,1);
-    return { id }
+    const actor = await this.findOne(id);
+    actor.destroy()
+    return {id}
   }
 }
 
