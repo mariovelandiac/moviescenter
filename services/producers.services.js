@@ -14,11 +14,14 @@ class ProducersServices {
   }
 
   async find() {
-    return this.producers
+    const producers = await models.Producer.findAll();
+    return producers
   }
 
   async findOne(id) {
-    const producer = await models.Producer.findByPk(id);
+    const producer = await models.Producer.findByPk(id, {
+      include: 'movies'
+    });
     if (!producer) {
       throw boom.notFound('producer not found')
     }

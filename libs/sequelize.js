@@ -22,6 +22,6 @@ setupModels(sequelize);
 
 
 // acá sincronizamos el comportamiento del ORM con la base de datos
-sequelize.sync();
+// sequelize.sync(); // no se recomienda
 
 module.exports = sequelize

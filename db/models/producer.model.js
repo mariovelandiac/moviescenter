@@ -22,8 +22,11 @@ const ProducerSchema = {
 }
 
 class Producer extends Model {
-  static associate() {
-    // model
+  static associate(models) {
+    this.hasMany(models.Movie, {
+      as: 'movies',
+      foreignKey: 'producerId'
+    });
   }
 
   static config(sequelize) {

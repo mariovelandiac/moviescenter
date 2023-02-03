@@ -19,7 +19,9 @@ class DirectorsServices {
   }
 
   async findOne(id) {
-    const director = await models.Director.findByPk(id);
+    const director = await models.Director.findByPk(id, {
+      include: 'movies'
+    });
     if (!director) {
       throw boom.notFound('director not found')
     }

@@ -15,12 +15,16 @@ class MoviesServices {
   }
 
   async find() {
-    const movies = await models.Movie.findAll();
+    const movies = await models.Movie.findAll({
+      include: ['director', 'producer']
+    });
     return movies
   }
 
   async findeOne(id) {
-    const movie = await models.Movie.findByPk(id)
+    const movie = await models.Movie.findByPk(id, {
+      include: ['director', 'producer']
+    })
     if (!movie) {
       throw boom.notFound('movie not found')
     }

@@ -9,8 +9,12 @@ const CommentSchema = {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
+  calification: {
+    allowNull: true,
+    type: DataTypes.INTEGER
+  },
   comment: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.TEXT,
   },
   createdAt: {

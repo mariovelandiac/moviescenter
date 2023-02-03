@@ -1,4 +1,6 @@
 const { Model, DataTypes, Sequelize} = require("sequelize");
+const {PRODUCER_TABLE} = require('./producer.model');
+const {DIRECTOR_TABLE} = require('./director.model');
 
 const MOVIE_TABLE = "movies"
 
@@ -19,7 +21,7 @@ const MovieSchema = {
   },
   watched: {
     allowNull: false,
-    type: DataTypes.BOOLEAN
+    type: DataTypes.BOOLEAN,
   },
   rating: {
     allowNull: false,
@@ -33,17 +35,44 @@ const MovieSchema = {
     allowNull: false,
     type: DataTypes.TEXT,
   },
+  image: {
+    allowNull: false,
+    type: DataTypes.STRING
+  },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'created_at',
     defaultValue: Sequelize.NOW
+  },
+  directorId: {
+    field: 'director_id',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: DIRECTOR_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
+  },
+  producerId: {
+    field: 'producer_id',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: PRODUCER_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
   }
 }
 
 class Movie extends Model {
-  static associate() {
-    // model
+  static associate(models) {
+    this.belongsTo(models.Director, {as: 'director'})
+    this.belongsTo(models.Producer, {as: 'producer'})
   }
 
   static config(sequelize) {
