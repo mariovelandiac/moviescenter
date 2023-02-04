@@ -19,6 +19,9 @@ const {DataTypes, Sequelize} = require('sequelize')
 module.exports = {
   // CREAR TABALA, migracion
   async up (queryInterface) {
+    await queryInterface.createTable(DIRECTOR_TABLE, DirectorSchema);
+    await queryInterface.createTable(PRODUCER_TABLE, ProducerSchema);
+    await queryInterface.createTable(MOVIE_TABLE, MovieSchema);
     await queryInterface.createTable(USER_TABLE, {
       id: {
       allowNull: false,
@@ -56,10 +59,7 @@ module.exports = {
     }
   });
     await queryInterface.createTable(COMMENT_TABLE, CommentSchema);
-    await queryInterface.createTable(DIRECTOR_TABLE, DirectorSchema);
     await queryInterface.createTable(GENRE_TABLE, GenreSchema);
-    await queryInterface.createTable(MOVIE_TABLE, MovieSchema);
-    await queryInterface.createTable(PRODUCER_TABLE, ProducerSchema);
     await queryInterface.createTable(ACTOR_TABLE, ActorSchema);
     await queryInterface.createTable(CUSTOMER_TABLE, CustomerSchema);
     await queryInterface.createTable(ACTOR_MOVIE_TABLE, ActorMovieSchema);
