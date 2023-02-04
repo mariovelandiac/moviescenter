@@ -36,19 +36,6 @@ const UserSchema = {
     type: DataTypes.DATE,
     field: 'created_at',
     defaultValue: Sequelize.NOW
-  },
-  totalwatched: {
-    type: DataTypes.VIRTUAL,
-    get() {
-      if (this.movies.length > 0) {
-        return this.movies.reduce((total, movie)=> {
-          if (movie.UserMovie.watched) {
-            return total + (movie.duration)
-          }
-        },0)
-      }
-      return 0
-    }
   }
 }
 
