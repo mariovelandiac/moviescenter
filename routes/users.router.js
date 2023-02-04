@@ -57,7 +57,19 @@ router.post('/:id', async (req, res) => {
   res.status(405).send("action not allowed")
 });
 
-
+router.patch('/update-movie/:id',
+  validatorHandler(getUserSchema, 'params'),
+  validatorHandler(updateMovieSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const {id} = req.params;
+      const body = req.body;
+      const user = await service.updateMovie(id, body)
+        res.json(user)
+      } catch (e) {
+        next(e)
+      }
+});
 
 router.patch('/:id',
   validatorHandler(getUserSchema, 'params'),
@@ -73,19 +85,7 @@ router.patch('/:id',
       }
 });
 
-router.patch('/update-movie/:id',
-  validatorHandler(getUserSchema, 'params'),
-  validatorHandler(updateMovieSchema, 'body'),
-  async (req, res, next) => {
-    try {
-      const {id} = req.params;
-      const body = req.body;
-      const user = await service.updateMovie(id, body)
-        res.json(user)
-      } catch (e) {
-        next(e)
-      }
-});
+
 
 router.delete('/delete-movie/:id',
   validatorHandler(getUserSchema, 'params'),
