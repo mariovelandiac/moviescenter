@@ -9,6 +9,10 @@ const {GenreSchema, GENRE_TABLE} = require('./../models/genre.model');
 const {MovieSchema, MOVIE_TABLE} = require('./../models/movies.model');
 const {ProducerSchema, PRODUCER_TABLE} = require('./../models/producer.model');
 const {ActorSchema, ACTOR_TABLE} = require('./../models/actor.model');
+const {CustomerSchema, CUSTOMER_TABLE} = require('./../models/customer.model');
+const {ActorMovieSchema, ACTOR_MOVIE_TABLE} = require('./../models/actor_movie.model');
+const {UserMovieSchema, USER_MOVIE_TABLE} = require('./../models/user_movie.model');
+const {GenreMovieSchema, GENRE_MOVIE_TABLE} = require('./../models/genre_movie.model');
 
 
 /** @type {import('sequelize-cli').Migration} */
@@ -22,16 +26,24 @@ module.exports = {
     await queryInterface.createTable(MOVIE_TABLE, MovieSchema);
     await queryInterface.createTable(PRODUCER_TABLE, ProducerSchema);
     await queryInterface.createTable(ACTOR_TABLE, ActorSchema);
+    await queryInterface.createTable(CUSTOMER_TABLE, CustomerSchema);
+    await queryInterface.createTable(ACTOR_MOVIE_TABLE, ActorMovieSchema);
+    await queryInterface.createTable(USER_MOVIE_TABLE, UserMovieSchema);
+    await queryInterface.createTable(GENRE_MOVIE_TABLE, GenreMovieSchema);
   },
 
   // BORRAR TABLA
   async down (queryInterface) {
-    await queryInterface.drop(USER_TABLE);
-    await queryInterface.drop(COMMENT_TABLE);
-    await queryInterface.drop(DIRECTOR_TABLE);
-    await queryInterface.drop(GENRE_TABLE);
-    await queryInterface.drop(MOVIE_TABLE);
-    await queryInterface.drop(PRODUCER_TABLE);
-    await queryInterface.drop(ACTOR_TABLE);
+    await queryInterface.dropTable(USER_TABLE);
+    await queryInterface.dropTable(COMMENT_TABLE);
+    await queryInterface.dropTable(DIRECTOR_TABLE);
+    await queryInterface.dropTable(GENRE_TABLE);
+    await queryInterface.dropTable(MOVIE_TABLE);
+    await queryInterface.dropTable(PRODUCER_TABLE);
+    await queryInterface.dropTable(ACTOR_TABLE);
+    await queryInterface.dropTable(CUSTOMER_TABLE);
+    await queryInterface.dropTable(ACTOR_MOVIE_TABLE);
+    await queryInterface.dropTable(USER_MOVIE_TABLE);
+    await queryInterface.dropTable(GENRE_MOVIE_TABLE);
   }
 };
