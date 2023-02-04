@@ -2,7 +2,7 @@
 
 
 
-const {UserSchema, USER_TABLE} = require('./../models/user.model');
+const {USER_TABLE} = require('./../models/user.model');
 const {CommentSchema, COMMENT_TABLE} = require('./../models/comment.model');
 const {DirectorSchema, DIRECTOR_TABLE} = require('./../models/director.model');
 const {GenreSchema, GENRE_TABLE} = require('./../models/genre.model');
@@ -13,13 +13,48 @@ const {CustomerSchema, CUSTOMER_TABLE} = require('./../models/customer.model');
 const {ActorMovieSchema, ACTOR_MOVIE_TABLE} = require('./../models/actor_movie.model');
 const {UserMovieSchema, USER_MOVIE_TABLE} = require('./../models/user_movie.model');
 const {GenreMovieSchema, GENRE_MOVIE_TABLE} = require('./../models/genre_movie.model');
-
+const {DataTypes, Sequelize} = require('sequelize')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   // CREAR TABALA, migracion
   async up (queryInterface) {
-    await queryInterface.createTable(USER_TABLE, UserSchema);
+    await queryInterface.createTable(USER_TABLE, {
+      id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    login: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    password: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    nickname: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    role: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      defaultValue: 'customer'
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      field: 'created_at',
+      defaultValue: Sequelize.NOW
+    }
+  });
     await queryInterface.createTable(COMMENT_TABLE, CommentSchema);
     await queryInterface.createTable(DIRECTOR_TABLE, DirectorSchema);
     await queryInterface.createTable(GENRE_TABLE, GenreSchema);
