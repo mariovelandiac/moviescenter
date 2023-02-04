@@ -13,13 +13,21 @@ class ActorsService {
     return newActor
   }
 
-  async find() {
-    const actors = await models.Actor.findAll();
+  async find(query) {
+    const options = {}
+    const {limit, offset} = query
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+    const actors = await models.Actor.findAll(options);
     return actors
   }
 
   async findOne(id) {
-    const actor = await models.Actor.findByPk(id);
+    const actor = await models.Actor.findByPk(id, {
+      include: 'movies'
+    });
     if (!actor) {
       throw boom.notFound('actor not found');
     }

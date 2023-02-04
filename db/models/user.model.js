@@ -36,6 +36,19 @@ const UserSchema = {
     type: DataTypes.DATE,
     field: 'created_at',
     defaultValue: Sequelize.NOW
+  },
+  totalwatched: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      if (this.movies.length > 0) {
+        return this.movies.reduce((total, movie)=> {
+          if (movie.UserMovie.watched) {
+            return total + (movie.duration)
+          }
+        },0)
+      }
+      return 0
+    }
   }
 }
 
@@ -43,6 +56,16 @@ class User extends Model {
   static associate(models) {
     this.hasOne(models.Customer, {
       as: 'customer',
+      foreignKey: 'userId'
+    });
+    this.belongsToMany(models.Movie, {
+      as: 'movies',
+      through: models.UserMovie,
+      foreignKey: 'userId',
+      otherKey: 'movieId'
+    });
+    this.hasMany(models.Comment, {
+      as: 'comments',
       foreignKey: 'userId'
     })
   }

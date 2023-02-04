@@ -19,10 +19,6 @@ const MovieSchema = {
     allowNull: false,
     type: DataTypes.DATE
   },
-  watched: {
-    allowNull: false,
-    type: DataTypes.BOOLEAN,
-  },
   rating: {
     allowNull: false,
     type: DataTypes.DECIMAL(2,1)
@@ -71,8 +67,24 @@ const MovieSchema = {
 
 class Movie extends Model {
   static associate(models) {
-    this.belongsTo(models.Director, {as: 'director'})
-    this.belongsTo(models.Producer, {as: 'producer'})
+    this.belongsTo(models.Director, {as: 'director'});
+    this.belongsTo(models.Producer, {as: 'producer'});
+    this.hasMany(models.Comment, {
+      as: 'comments',
+      foreignKey: 'movieId'
+    });
+    this.belongsToMany(models.Genre, {
+      as: 'genre',
+      through: models.GenreMovie,
+      foreignKey: 'movieId',
+      otherKey: 'genreId'
+    });
+    this.belongsToMany(models.Actor, {
+      as: 'actors',
+      through: models.ActorMovie,
+      foreignKey: 'movieId',
+      otherKey: 'actorId'
+    });
   }
 
   static config(sequelize) {

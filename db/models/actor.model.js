@@ -22,8 +22,13 @@ const ActorSchema = {
 }
 
 class Actor extends Model {
-  static associate() {
-    // model
+  static associate(models) {
+    this.belongsToMany(models.Movie, {
+      as: 'movies',
+      through: models.ActorMovie,
+      foreignKey: 'actorId',
+      otherKey: 'movieId'
+    });
   }
 
   static config(sequelize) {

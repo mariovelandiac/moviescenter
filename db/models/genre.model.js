@@ -22,8 +22,13 @@ const GenreSchema = {
 }
 
 class Genre extends Model {
-  static associate() {
-    // model
+  static associate(models) {
+    this.belongsToMany(models.Movie, {
+      as: 'movies',
+      through: models.GenreMovie,
+      foreignKey: 'genreId',
+      otherKey: 'movieId'
+    })
   }
 
   static config(sequelize) {

@@ -15,6 +15,11 @@ class UsersService {
     return newUser
   }
 
+  async addMovie(data) {
+    const newMovie = await models.UserMovie.create(data);
+    return newMovie
+  }
+
   async find() {
     const users = await models.User.findAll({
       include: ['customer']
@@ -23,11 +28,21 @@ class UsersService {
   }
 
   async findOne(id) {
-    const user = await models.User.findByPk(id);
+    const user = await models.User.findByPk(id, {
+      include: ['customer', 'comments','movies']
+    });
     if (!user) {
       throw boom.notFound('user not found')
     }
     return user
+  }
+
+  async findOneUserMovie (id) {
+    const movieUser = await models.UserMovie.findByPk(id);
+    if (!movieUser) {
+      throw boom.notFound('this user does not have relationship with this movie');
+    }
+    return movieUser
   }
 
   async update(id, changes) {
@@ -36,10 +51,23 @@ class UsersService {
     return rta
   }
 
+  async updateMovie(id, changes) {
+    const movieUser = await this.findOneUserMovie(id);
+    const rta = await movieUser.update(changes)
+    return rta
+  }
+
   async delete(id) {
     const user = await this.findOne(id);
     await user.destroy();
     return {id}
+  }
+
+
+  async removeMovie(id) {
+    const movieUser = await this.findOneUserMovie(id);
+    await movieUser.destroy(id);
+    return {message: 'movie removed of your wish list'}
   }
 }
 

@@ -5,14 +5,16 @@ const service = new ActorsService();
 const validatorHandler = require("../middlewares/validator.handler")
 const {createActorSchema, updateActorSchema,getActorSchema}
  = require("../schemas/actors.schemas");
-
+const {querySchema} = require('./../schemas/actors.schemas')
 
 // ruta para endpoint de actores
 
-router.get('/', async (req, res) => {
-  const actors = await service.find();
-  res.json(actors);
-})
+router.get('/',
+  validatorHandler(querySchema, 'query'),
+  async (req, res) => {
+    const actors = await service.find(req.query);
+    res.json(actors);
+  })
 
 // ruta para endpoint de actor/actriz en partícular
 router.get('/:id',

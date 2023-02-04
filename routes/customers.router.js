@@ -10,8 +10,8 @@ const {createCustomerSchema, updateCustomerSchema,getCustomerSchema}
 // ruta para endpoint de actores
 
 router.get('/', async (req, res) => {
-  const actors = await service.find();
-  res.json(actors);
+  const customer = await service.find();
+  res.json(customer);
 })
 
 // ruta para endpoint de actor/actriz en partícular
@@ -20,8 +20,8 @@ router.get('/:id',
   async (req, res, next) => {
     try {
       const {id} = req.params;
-      const actor = await service.findOne(id)
-      res.json(actor)
+      const customer = await service.findOne(id)
+      res.json(customer)
     } catch (e) {
       next(e);
     }

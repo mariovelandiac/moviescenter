@@ -2,14 +2,18 @@ const express = require("express");
 const router = express.Router();
 const MoviesServices = require("../services/movies.services");
 const service = new MoviesServices();
-const validatorHandler = require("../middlewares/validator.handler")
-const {createMovieSchema, updateMovieSchema,getMovieSchema}
+const validatorHandler = require("../middlewares/validator.handler");
+const {createMovieSchema, updateMovieSchema,getMovieSchema, addActorSchema,
+  addGenreSchema, querySchema}
  = require("../schemas/movies.schemas");
+
 // ruta para endpoint de movies
 
-router.get("/", async (req, res, next) => {
+router.get("/",
+  validatorHandler(querySchema, 'query'),
+  async (req, res, next) => {
   try {
-    const movies = await service.find();
+    const movies = await service.find(req.query);
     res.json(movies)
   } catch (e) {
     next(e)
@@ -46,7 +50,31 @@ router.post('/',
   } catch (e) {
     next(e)
   }
-})
+});
+
+router.post('/add-actor',
+  validatorHandler(addActorSchema, 'body'),
+  async (req, res, next) => {
+  try {
+    const body = req.body;
+    const newMovie = await service.addActor(body);
+     res.status(201).json(newMovie);
+  } catch (e) {
+    next(e)
+  }
+});
+
+router.post('/add-genre',
+  validatorHandler(addGenreSchema, 'body'),
+  async (req, res, next) => {
+  try {
+    const body = req.body;
+    const newMovie = await service.addGenre(body);
+     res.status(201).json(newMovie);
+  } catch (e) {
+    next(e)
+  }
+});
 
 router.post('/:id', async (req, res) => {
   res.status(405).send("action not allowed")
@@ -76,6 +104,7 @@ router.patch('/:id',
   } catch (e) {
     next(e)
   }
- })
+ });
+
 
 module.exports = router;

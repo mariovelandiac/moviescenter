@@ -1,22 +1,14 @@
 const { Model, DataTypes, Sequelize} = require("sequelize");
 
-const COMMENT_TABLE = "comments";
-const {USER_TABLE} = require('./user.model.js');
-const {MOVIE_TABLE} = require('./movies.model.js');
-const CommentSchema = {
+const USER_MOVIE_TABLE = "user_movie"
+const {USER_TABLE} = require('./user.model')
+const {MOVIE_TABLE} = require('./movies.model')
+const UserMovieSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER
-  },
-  calification: {
-    allowNull: true,
-    type: DataTypes.INTEGER
-  },
-  comment: {
-    allowNull: true,
-    type: DataTypes.TEXT,
   },
   createdAt: {
     allowNull: false,
@@ -24,9 +16,14 @@ const CommentSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW
   },
+  watched: {
+    allowNull: false,
+    defaultValue: false,
+    type: DataTypes.BOOLEAN,
+  },
   userId: {
     field: 'user_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: USER_TABLE,
@@ -37,7 +34,7 @@ const CommentSchema = {
   },
   movieId: {
     field: 'movie_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: MOVIE_TABLE,
@@ -48,20 +45,19 @@ const CommentSchema = {
   }
 }
 
-class Comment extends Model {
-  static associate(models) {
-    this.belongsTo(models.User, { as: 'user' });
-    this.belongsTo(models.Movie, { as: 'movie' });
+class UserMovie extends Model {
+  static associate() {
+    // model
   }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: COMMENT_TABLE,
-      modelName: 'Comment',
+      tableName: USER_MOVIE_TABLE,
+      modelName: 'UserMovie',
       timestamps: false
     }
   }
 }
 
-module.exports = { COMMENT_TABLE, CommentSchema, Comment }
+module.exports = { USER_MOVIE_TABLE, UserMovieSchema, UserMovie }

@@ -215,6 +215,7 @@ $RECYCLE.BIN/
 # persistencia de datos
 postgres_data
 mysql_data
+mysql
 
 #Docker info
 docker-compose.yml
